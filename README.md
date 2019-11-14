@@ -7,3 +7,7 @@ Gone further in training the model by various Machine learning algorithms like R
 Instance based learning algorithm like K-NN which does not create model. 
 Iris data is also tested upon the Decision Tree algorithm. 
 We notice that Decision Tree Classifier gives te maximum accuracy when compared with the other two.
+
+
+Boston Data is a house pricing data and I have applied Linear Regression to train the model. The score is not great means that model 
+might not perform well when given data to predict prices.
