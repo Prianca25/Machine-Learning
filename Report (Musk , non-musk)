@@ -1,0 +1,211 @@
+In this report I intend to describe the procedure followed in building the model, explaining why a method or function was choosen.Going further and highlighting the significance of the adopted approach.
+
+OBJECTIVE
+The Objective of the project was to Classify the given data set into Musk or non-Musk category. It was a binary classification problem.It is a Supervised Machine Learning example as the data set had labelled data( the class attribute determines whether the given molecule is MUSK or NON-MUSK). 
+             
+                The choice was given to opt for either Multi-Layered Perceptron, CNN or RNN or even can deploy transfer learning. The dataset consists of 6598 Rows and  170 columns or attributes including the class or the label.
+The purpose was to Train the model on the given data set, Multi-Layered Perceptron model is used.
+
+The model is build upon Multilayered Perceptron or Neural Network using Keras as a deep learning library. The data is been standarized before feeding into the model. The metric used is 'ACCURACY' which gives 100% accuracy with no loss. Hence the model is very well trained and can predict unknown data with high accuracy. The following provides the brief of the result obtained after training and testing the data.
+Accuracy: 1.000000
+Precision: 1.000000
+Recall: 1.000000
+F1 score: 1.000000
+Cohens kappa: 1.000000
+ROC AUC: 1.000000
+[[1118    0]
+ [   0  202]]
+
+The project begins with importing basic libraries, the libraries used are
+1) Pandas 
+Pandas a  Python library used for reading the csv file, converting the data into a dataframe. Pandas are used for data mungigng and preparation. The data exploration is possible because of the structured representation of the data, possible with the help of Pandas.
+
+2) Numpy 
+Numpy yet another Python library used for numerical computation. It is helpful for performing matrix multiplication, array opeartion and for scientific computing.
+
+3)Matplotlib and Seaborn
+These are the plotting libraries of Python. They help to Visulaize the data.To get a quick view of the data. By plotting the density and Histograms I understood thayt data is not uniform.This meant that before feeding the data into the model it will require some kind of Standardization. 
+
+4)Sklearn/SICKIT Learn Library
+Sklean library of Python provides with excellent functions and modules for model buliding.
+a)I have used PIPELINE to avoid data leakage in the test data. Pipelines provide standard workflows. Python Scikit Learn provides a pipeline utility to help automate the Machine Learning workflows.
+
+b)For MODEL PREPROCESSING I have used Standard Scaler and LabelEncoder
+b.1)Standard Scaler  : Scales the data and while taking into account standard deviation. If standard deviation of a feature is different,their range would also differ. Standard Scaling reduces the effect of any outlier.
+The Formula : z = (x - u) / s
+
+b.2)Label Encoder : Important step in data preprocessing. it refers to converting the labels into numeric form so as to convert it into the machine-readable form. The columns containing string values like molecule_name  and Conformation_name were converted into numeric format with Label Encoding.
+
+
+c)For MODEL EVALUATION I have used StratifiedKFold and cross_val_score
+c.1)StrtifiedKFold :  Stratification is the process of rearranging the data as to ensure each fold is a good representative of the whole. For example in a binary classification problem where each class comprises 50% of the data, it is best to arrange the data such that in every fold, each class comprises around half the instances. 
+
+c.2)Cross_val_score : Evaluate a score by cross-validation. 
+Cross-validation is a technique used to protect against overfitting in a predictive model. It is used to estimate performance of the model.
+I have taken 10 splits/ folds here and after every fold, the data is shuffled. 
+
+The RESULT  we get is the mean of various scores obtained.
+This is more accurate as the model is trained and evaluated multiple times on different data.
+
+SEED is used for result reproducibility. Now, any time this code is run it will give the same output as I have fixed the seed. The seed can be set to random to obtain different results.
+
+5) Keras Deep Learning Library: 
+It is run on top of Theano or Tensorflow. Keras is a powerful and easy to use Python library for developing and evaluating deep learning models. It wraps the efficient numerical computation libraries Theano and TensorFlow and allows to define and train neural network models in a few short line of code. 
+
+
+DATA TRANSFORMS :
+these are ways or methods for data preprocessing
+Fit() function to prepare parameters of the transform once on the data. Later we use transform() function on the same data to prepare it for modelling and again on the test or validation dataset.
+
+
+
+EXPLANATION OF THE MODEL IN DETAIL: 
+The Keras library provides wrapper classes and allows to use neural network models developed with Keras in scikit-learn.
+There is a KerasClassifier class in Keras that can be used as an Estimator in scikit-learn, the base type of model in the library.
+The KerasClassifier takes the name of a function as an argument. 
+This function returnsthe constructed neural network model, ready for training.
+
+        I have created a function create_larger() and then defined the model within this function .Models in Keras are defined as a sequence of layers. We create a sequential model and add a layer at a time(the layers is solely a personal discretion). 
+Let's explore the hidden and other layers:
+INPUT LAYER
+Input layer to have right number of inputs (how to determine the number of inputs depends upon hit and trial process)
+Inputs are sepecified when creating the first layer with the input-din argument.
+
+DENSE 
+when we use fully connected network we use fully connected layers and these layers are defined using Dense class. Number of neurons as the first argument, initialization as the second argument and specify the acitvation argument.
+
+OUTPUT LAYER
+The output layer contains a single neuron in order to make predictions. It
+uses the sigmoid activation function in order to produce a probability output in the range of
+0 to 1
+
+ACTIVATION FUNCTION
+The weighted inputs are summed and passed through an activation function often called a transfer function. I have used a sigmoid activation function in the output layer. This is to ensure theoutput values are in the range of 0 and 1 and may be used as predicted probabilities.
+                              
+                Relu or Rectified Linear Unit  Activation function is used in first 2 layers.It is a non-linear activation function.The main advantage of using the ReLU function over other activation functions is that it does not activate all the neurons at the same time. This means that the neurons will only be deactivated if the output of the linear transformation is less than 0
+          
+                Relu SOLVES the problem of Vanishing Gradient Problem(VGP), due to increased number of layers saturation increases and thus model does not perform well there is a VGP.Relu help in Weight Convergence,sloves problem of Vanishing Gradient.
+
+
+   Finally,the network uses the efficient ADAM gradient descent optimization algorithm with a logarithmic loss function, which is called categorical crossentropy in Keras.
+
+ADAM Optimization Algorthim has following benefits:
+Easy to implement.
+Quite computationally efficient.
+Requires little memory space.
+Good for non-stationary objectives.
+Works well on problems with noisy or sparse gradients.
+Works well with large data sets and large parameters.
+
+             
+Binary crossentropy 
+It is a loss function used on problems involving yes/no (binary) decisions. For instance, in multi-label problems, where an example can belong to multiple classes at the same time, the model tries to decide for each class whether the example belongs to that class or not.
+
+The pipeline is a wrapper that
+executes one or more models within a pass of the cross-validation procedure. Here, we can
+define a pipeline with the StandardScaler followed by our neural network model.
+
+MODEL COMPILATION
+Numeric libraries are used. Tensorflow here , the backend automatically chooses the best way to represent the network for training and making predictions to run on the hardware.
+Debugging is turned off by setting Verbose to Zero.
+
+Fit Model 
+The model is defined and compiled it is now ready for efficient computation. Now we can execute the model. We train or fit our model on our loaded data by calling the fit() function on the model.
+
+                                   The training process will run for a fixed number of iterations through the dataset called EPOCHS. 
+   Batch size argument set the number of instances that are evaluated befor a weight update in the network. 
+
+
+
+PLOTTING THE ACCURACY AND LOSS GRAPH
+Keras provides the capability to register callbacks when training a deep learning model.
+One of the default callbacks that is registered when training all deep learning models is the History
+callback. It records training metrics for each epoch. This includes the loss and the accuracy (for
+classification problems) as well as the loss and accuracy for the validation dataset
+
+
+The plots can provide an
+indication of useful things about the training of the model, such as:
+ It’s speed of convergence over epochs (slope).
+ Whether the model may have already converged (plateau of the line).
+ Whether the model may be over-learning the training data (inflection for validation line).
+
+
+We can create plots from the collected history data
+1. A plot of accuracy on the training and validation datasets over training epochs.
+2. A plot of loss on the training and validation datasets over training epochs.
+
+The Plot Shows a straight line around 1 depicting a 100% accuracy attained over 150 epochs
+and the loss graph shows no error.
+
+METRICS USED AND THEIR IMPORTANCE
+The Project used Classification Metrics to measure and compare the performance of Machine Learning Algorthim. Algorthim is evaluated through Metrics.
+
+THe result obtained are given below:
+Accuracy: 1.000000
+Precision: 1.000000
+Recall: 1.000000
+F1 score: 1.000000
+Cohens kappa: 1.000000
+ROC AUC: 1.000000
+[[1118    0]
+ [   0  202]]
+
+DETAILS OF METRICS:
+1) ACCURACY 
+Classification Accuracy is the number of correct predictions made as a ratio of all predictions made. Here we notice that we obtain all correct predictions. Thus the result is 100%.
+Accuracy is the most common evaluation metric for classification problems.
+However, Accuracy Metric has its own limitations as it measures the overall correctness and does not distinguish between false positive errors and false negative errors.
+
+2) PRECISION
+Precision is the fraction of positive predictions that are correct, here it happens to be 1. This implies that the algorithm correctly predicted the positive predictions. It has correctly classified all Musk as Musk. 
+Precision = TruePositives / (TruePositives + FalsePositives)
+Precision = 1 ; implies perfect precision.
+
+3) RECALL
+Recall is the TRUE POSITIVE RATE also called 'Sensitivity'. It is the number of instances from positive (first) class that are actually predicted correctly.There might be few instances where the algorthim correctly classifies the negative instances as false and positive instances as true,if we are interested in knowing both then Recall comes to our aid. recall provides an indication of missed positive predictions.
+Recall quantifies the number of positive class predictions made out of all positive examples in the dataset.
+e.g. In medical domain where we want to know the cases of cancer and also cases of non-cancer patients.
+Recall = TruePositives / (TruePositives + FalseNegatives)
+Recall = 90 / (90 + 10)
+Recall = 90 / 100
+Recall = 0.9
+
+
+4)F1 SCORE
+F-Measure provides a single score that balances both the concerns of precision and recall in one number.
+It is the harmonic mean or weighted average of the precision and recall.
+F1-Measure = (2 * Precision * Recall) / (Precision + Recall)
+F1-Measure = (2 * Precision * Recall) / (Precision + Recall)
+F1-Measure = (2 * 1.0 * 1.0) / (1.0 + 1.0)
+F1-Measure = (2 * 1.0) / 2.0
+F1-Measure = 1.0
+
+5) Classification Report
+This gives a quick idea of the accuracy of a model using a number of measures. It displays Precision, recall, F-1 score and support
+Support is the number of occurences of each class in True.
+
+6)Confusion Matrix
+The table presents predictions on x axis and accuracy outcomes on the y-axis.
+1118 classified as True Positive (Non Musk)
+202 classified as True Negative (Musk)
+
+7) ROC Curve
+Roc curve shows the true positive rates against the false positive rate at various cut points. It also demonstrates a trade-off between sensitivity (recall and specificity or the true negative rate). Here it is ONE.
+
+
+CONCLUSION
+The project started by importing basic libraries,loading the dataset.Performing exploratory data analysis, fetching a few statistical data that gave an idea that standarization will be required before model building. Then proceeding further on to data visulaization observations were made regarding the distribution of the data, the density plots, histograms and countplots helped to give a quick view about the data set.Next step was Data preprocessing to prepare the data for training. Standarization was performed. Data was split into training and validation set.Subsequently the model was bulit, compiled and fitted. PLots of accuracy and loss function were plotted. In the next step the metrics were evaluated and the results were obtained giving 100% accuracy achieved by the model.
+
+
+
+
+
+
+
+
+
+
+
+        
+ 
